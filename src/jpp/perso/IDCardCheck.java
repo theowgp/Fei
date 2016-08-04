@@ -60,7 +60,7 @@ public class IDCardCheck {
 //			PATTERN
 //			checking if the length is correct
 			if(!check_length(mrz, 30)){
-			   	System.out.println("INVALID_FORMAT, length is not 30");
+//			   	System.out.println("INVALID_FORMAT, length is not 30");
 			   	return IDCardCheckResult.INVALID_FORMAT;
 			}
 			
@@ -70,7 +70,7 @@ public class IDCardCheck {
 			
 			Matcher m1 = r1.matcher(mrz[0]);
 		    if (!m1.find( )) {
-		       System.out.println("INVALID_FORMAT, the first pattern is broken, new Ausweiss");
+//		       System.out.println("INVALID_FORMAT, the first pattern is broken, new Ausweiss");
 		       return IDCardCheckResult.INVALID_FORMAT;
 		    } 
 		    
@@ -80,7 +80,7 @@ public class IDCardCheck {
 			
 			Matcher m2 = r2.matcher(mrz[1]);
 		    if (!m2.find( )) {
-		       System.out.println("INVALID_FORMAT, the second pattern is broken, new Ausweiss");
+//		       System.out.println("INVALID_FORMAT, the second pattern is broken, new Ausweiss");
 		       return IDCardCheckResult.INVALID_FORMAT;
 		    }		    
 			
@@ -90,7 +90,7 @@ public class IDCardCheck {
 			
 			Matcher m3 = r3.matcher(mrz[2]);
 		    if (!m3.find( )) {
-		       System.out.println("INVALID_FORMAT, the third pattern is broken, new Ausweiss");
+//		       System.out.println("INVALID_FORMAT, the third pattern is broken, new Ausweiss");
 		       return IDCardCheckResult.INVALID_FORMAT;
 		    }
 			
@@ -103,7 +103,7 @@ public class IDCardCheck {
 //			PATTERN
 //			checking if the length is correct
 			if(!check_length(mrz, 36)){
-			   	System.out.println("INVALID_FORMAT, length is not 36");
+//			   	System.out.println("INVALID_FORMAT, length is not 36");
 			   	return IDCardCheckResult.INVALID_FORMAT;
 			}
 			
@@ -113,7 +113,7 @@ public class IDCardCheck {
 			
 			Matcher m1 = r1.matcher(mrz[0]);
 		    if (!m1.find( )) {
-		       System.out.println("INVALID_FORMAT, the first pattern is broken, old Ausweiss");
+//		       System.out.println("INVALID_FORMAT, the first pattern is broken, old Ausweiss");
 		       return IDCardCheckResult.INVALID_FORMAT;
 		    } 
 		    
@@ -123,14 +123,26 @@ public class IDCardCheck {
 			
 			Matcher m2 = r2.matcher(mrz[1]);
 		    if (!m2.find( )) {
-		       System.out.println("INVALID_FORMAT, the second pattern is broken, old Ausweiss");
+//		       System.out.println("INVALID_FORMAT, the second pattern is broken, old Ausweiss");
 		       return IDCardCheckResult.INVALID_FORMAT;
 		    }
 		    
 		    
 //		    CHECKSUM
+//		    part one
 		    int[] numbers = mypars(mrz[1].substring(0, 9));
 		    int proof = Integer.parseInt(String.valueOf(mrz[1].charAt(9)));
+		    if(calcChecksum(numbers) != proof)return IDCardCheckResult.INVALID_CHECKSUM;
+
+//		    part two
+		    numbers = mypars(mrz[1].substring(13, 19));
+		    proof = Integer.parseInt(String.valueOf(mrz[1].charAt(19)));
+		    if(calcChecksum(numbers) != proof)return IDCardCheckResult.INVALID_CHECKSUM;
+		    
+		    
+//		    part three
+		    numbers = mypars(mrz[1].substring(21, 27));
+		    proof = Integer.parseInt(String.valueOf(mrz[1].charAt(27)));
 		    if(calcChecksum(numbers) != proof)return IDCardCheckResult.INVALID_CHECKSUM;
 		    
 		    
